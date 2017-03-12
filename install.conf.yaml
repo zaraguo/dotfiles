@@ -1,0 +1,14 @@
+- defaults:
+
+    link:
+        create: true
+
+- clean: ['~']
+
+- link:
+    ~/.vimrc: vimrc
+    ~/.spacemacs.d: spacemacs.d
+    ~/.tmux.conf: tmux.conf
+
+- shell:
+    - [git submodule update --init --recursive, Installing submodules]
