@@ -1,0 +1,344 @@
+" vim: foldmethod=marker ts=2 sts=2 sw=2 fdl=0
+
+" function {{{
+let s:cache_dir = '~/.vimcache'
+
+function! s:get_cache_dir(suffix)
+  return resolve(expand(s:cache_dir . '/' . a:suffix))
+endfunction
+"}}}
+
+call plug#begin('~/.vim/plugged')
+
+" ----------------------------------------------------------------------------
+" <Enter> | vim-easy-align {{{
+" ----------------------------------------------------------------------------
+Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] }
+
+let g:easy_align_delimiters = {
+\ '>': { 'pattern': '>>\|=>\|>' },
+\ '\': { 'pattern': '\\' },
+\ '/': { 'pattern': '//\+\|/\*\|\*/', 'delimiter_align': 'l', 'ignore_groups': ['!Comment'] },
+\ ']': {
+\     'pattern':       '\]\zs',
+\     'left_margin':   0,
+\     'right_margin':  1,
+\     'stick_to_left': 0
+\   },
+\ ')': {
+\     'pattern':       ')\zs',
+\     'left_margin':   0,
+\     'right_margin':  1,
+\     'stick_to_left': 0
+\   },
+\ 'f': {
+\     'pattern': ' \(\S\+(\)\@=',
+\     'left_margin': 0,
+\     'right_margin': 0
+\   },
+\ 'd': {
+\     'pattern': ' \ze\S\+\s*[;=]',
+\     'left_margin': 0,
+\     'right_margin': 0
+\   }
+\ }
+
+" Start interactive EasyAlign in visual mode
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign with a Vim movement
+nmap ga <Plug>(EasyAlign)
+nmap gaa ga_
+
+" xmap <Leader><Enter>   <Plug>(LiveEasyAlign)
+" nmap <Leader><Leader>a <Plug>(LiveEasyAlign)
+
+" inoremap <silent> => =><Esc>mzvip:EasyAlign/=>/<CR>`z$a<Space>
+" }}}
+
+" ----------------------------------------------------------------------------
+" goyo.vim + limelight.vim {{{
+" ----------------------------------------------------------------------------
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+
+let g:limelight_paragraph_span = 1
+let g:limelight_priority = -1
+
+function! s:goyo_enter()
+  if has('gui_running')
+    set fullscreen
+    " set background=light
+    set linespace=7
+  elseif exists('$TMUX')
+    silent !tmux set status off
+  endif
+  " hi NonText ctermfg=101
+  Limelight
+endfunction
+
+function! s:goyo_leave()
+  if has('gui_running')
+    set nofullscreen
+    set background=dark
+    set linespace=0
+  elseif exists('$TMUX')
+    silent !tmux set status on
+  endif
+  Limelight!
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+nnoremap <Leader>G :Goyo<CR>
+" }}}
+
+" ============================================================================
+" FZF {{{
+" ============================================================================
+Plug 'junegunn/fzf',        { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+if has('nvim')
+  let $FZF_DEFAULT_OPTS .= ' --inline-info'
+  " let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+endif
+
+" File preview using CodeRay (http://coderay.rubychan.de/)
+let g:fzf_files_options =
+  \ '--preview "coderay {} 2> /dev/null | head -'.&lines.'"'
+
+nnoremap <silent> <expr> <Leader><Enter> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":Files\<cr>"
+nnoremap <silent> <Leader><Leader> :Buffers<CR>
+nnoremap <silent> <Leader>C        :Colors<CR>
+nnoremap <silent> <Leader>ag       :Ag <C-R><C-W><CR>
+nnoremap <silent> <Leader>AG       :Ag <C-R><C-A><CR>
+nnoremap <silent> <Leader>`        :Marks<CR>
+
+nnoremap <silent> <Leader>n        :bn<CR>
+nnoremap <silent> <Leader>p        :b#<CR>
+
+inoremap <expr> <c-x><c-t> fzf#complete('tmuxwords.rb --all-but-current --scroll 500 --min 5')
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+command! Plugs call fzf#run({
+  \ 'source':  map(sort(keys(g:plugs)), 'g:plug_home."/".v:val'),
+  \ 'options': '--delimiter / --nth -1',
+  \ 'down':    '~40%',
+  \ 'sink':    'Explore'})
+" }}}
+
+" ----------------------------------------------------------------------------
+" Navigation/Searching {{{
+" ----------------------------------------------------------------------------
+Plug 'rking/ag.vim', { 'on': 'Ag' } "{{{
+  let g:ag_working_path_mode="r"
+"}}}
+
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'} "{{{
+  let NERDTreeShowHidden=1
+  let NERDTreeQuitOnOpen=0
+  let NERDTreeShowLineNumbers=0
+  let NERDTreeChDirMode=0
+  let NERDTreeShowBookmarks=0
+  let NERDTreeHijackNetrw=1
+  let NERDTreeMapJumpNextSibling="]"
+  let NERDTreeMapJumpPrevSibling="["
+  let NERDTreeIgnore=['\.git', '\.hg', '\.svn$', '\~$', '\.pyc$', '\.beam$', '\.gz$', 'cscope\.*', '\.[ao]$', '\.so$']
+  let NERDTreeBookmarksFile=s:get_cache_dir('NERDTreeBookmarks')
+  nnoremap <leader>t :NERDTreeToggle<CR>
+"}}}
+
+Plug 'easymotion/vim-easymotion' "{{{
+  let g:EasyMotion_do_mapping = 0 " Disable default mappings
+  map <leader> <Plug>(easymotion-prefix)
+  " Bi-directional find motion
+  " Jump to anywhere you want with minimal keystrokes, with just one key binding.
+  " `s{char}{char}{label}`
+  " Need one more keystroke, but on average, it may be more comfortable.
+  nmap s <Plug>(easymotion-s2)
+  nmap t <Plug>(easymotion-t2)
+  "" Turn on case insensitive feature
+  let g:EasyMotion_smartcase = 1
+  " JK motions: Line motions
+  map <leader>j <Plug>(easymotion-j)
+  map <leader>k <Plug>(easymotion-k)
+"}}}"
+
+" clear search highlight
+map <leader>sc :nohl<CR>
+
+"}}}
+
+" ----------------------------------------------------------------------------
+" UI {{{
+" ----------------------------------------------------------------------------
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes' "{{{
+  let g:airline_theme = "bubblegum"
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#tmuxline#enabled = 0
+  let g:airline#extensions#whitespace#enabled = 1
+  let g:airline#extensions#tagbar#enabled = 1
+  function! AirlineInit()
+    let g:airline_section_b = airline#section#create(['branch'])
+    let g:airline_section_c = '%<%t%m'
+    let g:airline_section_warning = airline#section#create(['syntastic'])
+  endfunction
+  autocmd VimEnter * if exists(':AirlineToggle') | call AirlineInit()
+"}}}
+
+" colors
+Plug 'junegunn/seoul256.vim'
+Plug 'tomasr/molokai'
+Plug 'chriskempson/vim-tomorrow-theme'
+
+if exists('$TMUX')
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'benmills/vimux' "{{{
+    " Run the current file with rspec
+    "map <leader>vb :call VimuxRunCommand("clear; rspec " . bufname("%"))<CR>
+    " Prompt for a command to run
+    map <leader>vp :VimuxPromptCommand<CR>
+    " Run last command executed by VimuxRunCommand
+    map <leader>vl :VimuxRunLastCommand<CR>
+    " Inspect runner pane
+    map <leader>vi :VimuxInspectRunner<CR>
+    " Close vim tmux runner opened by VimuxRunCommand
+    map <leader>vq :VimuxCloseRunner<CR>
+    " Interrupt any command running in the runner pane
+    map <leader>vx :VimuxInterruptRunner<CR>
+    " Zoom the runner pane (use <bind-key> z to restore runner pane)
+    map <leader>vz :call VimuxZoomRunner()<CR>
+  "}}}"
+  Plug 'edkolev/tmuxline.vim'
+    let g:tmuxline_preset = 'powerline'
+    let g:tmuxline_theme = 'powerline'
+endif
+
+Plug 'ShowTrailingWhitespace'
+
+Plug 'mhinz/vim-startify' "{{{
+  let g:startify_session_dir = s:get_cache_dir('sessions')
+  let g:startify_change_to_vcs_root = 1
+  let g:startify_show_sessions = 1
+  nnoremap <F1> :Startify<cr>
+"}}}
+Plug 'ryanoasis/vim-devicons' "{{{
+  let g:webdevicons_enable_nerdtree = 1
+  let g:webdevicons_enable_ctrlp = 1
+  let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
+  let g:DevIconsEnableFoldersOpenClose = 1
+  let g:WebDevIconsOS = 'Darwin'
+"}}}
+
+"}}}
+
+" ----------------------------------------------------------------------------
+" SCM {{{
+" ----------------------------------------------------------------------------
+Plug 'mhinz/vim-signify'
+  let g:signify_disable_by_default=1
+  let g:signify_update_on_bufenter=0
+
+Plug 'tpope/vim-fugitive'
+  nnoremap <silent> <leader>gs :Gstatus<CR>
+  nnoremap <silent> <leader>gd :Gdiff<CR>
+  nnoremap <silent> <leader>gc :Gcommit<CR>
+  nnoremap <silent> <leader>gb :Gblame<CR>
+  nnoremap <silent> <leader>gl :Glog<CR>
+  nnoremap <silent> <leader>gp :Git push<CR>
+  nnoremap <silent> <leader>gw :Gwrite<CR>
+  nnoremap <silent> <leader>gr :Gremove<CR>
+  autocmd BufReadPost fugitive://* set bufhidden=delete
+"}}}
+
+" ----------------------------------------------------------------------------
+" Editing {{{
+" ----------------------------------------------------------------------------
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
+
+Plug 'scrooloose/nerdcommenter'
+Plug 'terryma/vim-expand-region'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'jiangmiao/auto-pairs' "{{{
+  let g:AutoPairsFlyMode = 0
+"}}}
+
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+  let g:undotree_SplitLocation='botright'
+  let g:undotree_SetFocusWhenToggle=1
+  let g:undotree_WindowLayout = 2
+  nnoremap U :UndotreeToggle<CR>
+
+Plug 'bufkill.vim'
+  nnoremap <leader>d :BD<cr>
+"}}}
+
+" ----------------------------------------------------------------------------
+" Completion {{{
+" ----------------------------------------------------------------------------
+Plug 'honza/vim-snippets'
+
+Plug 'Valloric/YouCompleteMe'
+  let g:ycm_complete_in_comments_and_strings=1
+  let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
+  let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
+  let g:ycm_filetype_blacklist={'unite': 1}
+
+Plug 'SirVer/ultisnips'
+  let g:UltiSnipsExpandTrigger="<tab>"
+  let g:UltiSnipsJumpForwardTrigger="<tab>"
+  let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+  let g:UltiSnipsSnippetsDir='~/.vim/snippets'
+"}}}
+
+
+" ----------------------------------------------------------------------------
+" javascript {{{
+" ----------------------------------------------------------------------------
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'maksimr/vim-jsbeautify', { 'for': 'javascript' }
+  nnoremap <leader>fjs :call JsBeautify()<cr>
+" Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
+Plug 'elzr/vim-json', { 'for': 'json' }
+" }}}
+
+" ----------------------------------------------------------------------------
+" markdown {{{
+" ----------------------------------------------------------------------------
+Plug 'tpope/vim-markdown',    { 'for': 'markdown' }
+Plug 'itspriddle/vim-marked', { 'for': 'markdown' }
+" }}}
+
+" ----------------------------------------------------------------------------
+" Erlang/Elixir {{{
+" ----------------------------------------------------------------------------
+Plug 'jimenezrick/vimerl', { 'for': ['erlang', 'elixir'] }
+  let g:erlang_highlight_bif = 1
+  let erlang_show_errors = 0
+Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+if has('nvim')
+  Plug 'thinca/vim-ref'
+  Plug 'awetzel/elixir.nvim', {
+        \ 'for': 'elixir',
+        \ 'do': 'yes \| ./install.sh'
+        \}
+  let g:elixir_maxmenu = 30
+  let g:elixir_docpreview = 0
+  let g:elixir_showerror = 0
+  let g:elixir_autobuild = 0
+endif
+" }}}
+
+call plug#end()

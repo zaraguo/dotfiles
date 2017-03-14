@@ -1,0 +1,83 @@
+" vim: foldmethod=marker ts=2 sts=2 sw=2 fdl=0
+
+" functions {{{
+function! Preserve(command)
+  " preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " do the business:
+  execute a:command
+  " clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+
+function! StripTrailingWhitespace()
+  call Preserve("%s/\\s\\+$//e")
+endfunction
+"}}}
+
+nmap <leader>fef :call Preserve("normal gg=G")<CR>
+nmap <leader>f$ :call StripTrailingWhitespace()<CR>
+
+nnoremap <leader>w :w<cr>
+
+"awesome, inserts new line without going into insert mode
+map <S-Enter> O<ESC>
+map <Enter> o<ESC>
+
+" toggle paste
+map <F6> :set invpaste<CR>:set paste?<CR>
+
+" smash escape
+inoremap fd <esc>
+
+inoremap <C-]> <C-o>l
+
+" cscope
+nmap <C-[>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-[>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-[>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-[>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-[>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-[>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-[>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-[>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+" folds
+nnoremap zr zr:echo &foldlevel<cr>
+nnoremap zm zm:echo &foldlevel<cr>
+nnoremap zR zR:echo &foldlevel<cr>
+nnoremap zM zM:echo &foldlevel<cr>
+
+" screen line scroll
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+
+" find current word in quickfix
+nnoremap <leader>fw :execute "vimgrep ".expand("<cword>")." %"<cr>:copen<cr>
+" find last search in quickfix
+nnoremap <leader>ff :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
+
+" shortcuts for windows
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" hide annoying quit message
+nnoremap <C-c> <C-c>:echo<cr>
+
+" quick buffer open
+nnoremap gb :ls<cr>:e #
+
+" disable arrow keys
+map <Left> <Nop>
+map <Right> <Nop>
+map <Up> <Nop>
+map <Down> <Nop>
+imap <Up> <Nop>
+imap <Down> <Nop>
+imap <Left> <Nop>
+imap <Right> <Nop>
