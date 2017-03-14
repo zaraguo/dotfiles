@@ -7,6 +7,7 @@
 
 - link:
     ~/.vimrc: vimrc
+    ~/.vimrc.bundles: vimrc.bundles
     ~/.spacemacs.d: spacemacs.d
     ~/.tmux.conf: tmux.conf
 
