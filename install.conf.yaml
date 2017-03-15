@@ -11,6 +11,9 @@
     ~/.vimrc.mappings: vimrc.mappings
     ~/.spacemacs.d: spacemacs.d
     ~/.tmux.conf: tmux.conf
+    ~/.zshrc: zshrc
+    ~/.zsh: zsh
+    ~/.aliases: aliases
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
