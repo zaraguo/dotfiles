@@ -345,89 +345,21 @@ values."
   (setq js2-include-node-externs t)
   (setq js2-strict-missing-semi-warning nil))
 
-(defun rust-setup ()
-  (setq racer-cmd "~/.cargo/bin/racer")
-  (setq racer-rust-src-path "~/dev/rust/rustc/src")
-  (add-hook 'rust-mode-hook  #'racer-mode)
-  (add-hook 'racer-mode-hook #'eldoc-mode))
-
 (defun zenburn-customize ()
   (zenburn-with-color-variables
     (custom-theme-set-faces
-      'zenburn
-      `(fringe ((t (:foreground "#DCDCCC" :background "#3F3F3F"))))
-      `(mode-line
-         ((,class (:foreground "#8FB28F" :background "#2B2B2B"))
-          (t :inverse-video t)))
+     'zenburn
+     `(fringe ((t (:foreground "#DCDCCC" :background "#3F3F3F"))))
+     `(mode-line
+       ((,class (:foreground "#8FB28F" :background "#2B2B2B"))
+        (t :inverse-video t)))
 
-      `(mode-line-inactive
-         ((t (:foreground "#5F7F5F" :background "#383838"))))
-      `(org-checkbox ((t (:background "#5F5F5F" :foreground "#FFFFEF" :box nil))))
-      `(header-line ((t (:foreground "#F0DFAF" :background "#2B2B2B" :box nil))))
-      )))
+     `(mode-line-inactive
+       ((t (:foreground "#5F7F5F" :background "#383838"))))
+     `(org-checkbox ((t (:background "#5F5F5F" :foreground "#FFFFEF" :box nil))))
+     `(header-line ((t (:foreground "#F0DFAF" :background "#2B2B2B" :box nil))))
+     )))
 
-(defun email-config ()
-  ;;; Set up some common mu4e variables
-  (setq mu4e-maildir "~/.Maildir"
-        mu4e-trash-folder  "/[Gmail].Trash"
-        mu4e-refile-folder "/[Gmail].Done"
-        mu4e-drafts-folder "/[Gmail].Drafts"
-        mu4e-sent-folder   "/[Gmail].Sent Mail"
-        mu4e-get-mail-command "offlineimap"
-        mu4e-compose-signature-auto-include nil
-        mu4e-headers-skip-duplicates t
-        mu4e-use-fancy-chars t
-        mu4e-view-show-images t
-        mu4e-view-show-addresses t
-        mu4e-update-interval 600
-        mu4e-enable-mode-line t
-        mu4e-enable-notifications t)
-
-  (with-eval-after-load 'mu4e-alert
-    ;; Enable Desktop notifications
-    (mu4e-alert-set-default-style 'notifier)); For Mac OSX (through the terminal notifier app)
-
-  ;;; Mail directory shortcuts
-  (setq mu4e-maildir-shortcuts
-        '(("/INBOX"             . ?i)
-          ("/[Gmail].Sent Mail" . ?s)))
-
-  ;; use imagemagick, if available
-  (when (fboundp 'imagemagick-register-types)
-    (imagemagick-register-types))
-
-  ;;; Bookmarks
-  (setq mu4e-bookmarks
-        `(("flag:unread AND NOT flag:trashed" "Unread messages" ?u)
-          ("date:today..now" "Today's messages" ?t)
-          ("date:7d..now" "Last 7 days" ?w)
-          ("mime:image/*" "Messages with images" ?p)
-          (,(mapconcat 'identity
-                       (mapcar
-                        (lambda (maildir)
-                          (concat "maildir:" (car maildir)))
-                        mu4e-maildir-shortcuts) " OR ")
-           "All inboxes" ?i)))
-
-  ;; something about ourselves
-  (setq user-mail-address "zolazhou@gmail.com"
-        user-full-name  "Zola Zhou"
-        mu4e-compose-signature (concat
-                                "Cheers,\n"
-                                "Zola Zhou\n"))
-
-  ;; configuration for sending mail
-  ;; (require 'smtpmail)
-  (setq message-send-mail-function 'smtpmail-send-it
-        smtpmail-stream-type 'starttls
-        ;; starttls-use-gnutls t
-        ;; smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-        ;; smtpmail-auth-credentials (expand-file-name "~/.authinfo.gpg")
-        smtpmail-default-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 587
-        smtpmail-debug-info t))
-  
 
 (defun dotspacemacs/user-config ()
   "Configuration function.
@@ -435,16 +367,6 @@ values."
   layers configuration."
   (setq powerline-default-separator 'arrow)
   (spaceline-compile)
-
-  ;; Not work!
-  ;; (spacemacs/toggle-vi-tilde-fringe-off)
-  ;; (when (configuration-layer/layer-usedp 'chinese)
-  ;;   (when (spacemacs/system-is-mac)
-  ;;    ))
-  ;; (spacemacs//set-monospaced-font "Monaco for Powerline" "PingFang SC" 13 15)
-  ;; (dolist (charset '(kana han symbol cjk-misc bopomofo))
-  ;;   (set-fontset-font (frame-parameter nil 'font)
-  ;;                     charset (font-spec :family "PingFang SC" :size 15)))
 
   ;; theme
   (zenburn-customize)
@@ -469,9 +391,8 @@ values."
            "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
           ("j" "journal" entry (file+datetree (concat org-directory "/JOURNALs.org"))
            "* %^{Title} %?\n%U\n%a\n" :clock-in t :clock-resume t)))
-
-  ;; email
-  ;; (email-config)
+  (setq org-todo-keywords
+        '((sequence "TODO(t!)" "|" "DONE(D@)3" "CANCELED(c@/!)")))
 
   ;; parinfer
   ;; (setq parinfer-auto-switch-indent-mode t)
@@ -483,9 +404,6 @@ values."
 
   ;; clojure
   (add-hook 'clojure-mode-hook #'clojure-setup)
-
-  ;; rust
-  ;; (add-hook 'rust-mode-hook #'rust-setup)
 
   ;; js
   (add-hook 'js2-mode-hook #'js-setup))
@@ -501,6 +419,7 @@ values."
  '(package-selected-packages
    (quote
     (vimrc-mode dactyl-mode all-the-icons nodejs-repl yaml-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode org alert log4e gntp markdown-mode skewer-mode simple-httpd json-snatcher json-reformat js2-mode haml-mode gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck magit magit-popup git-commit with-editor autothemer web-completion-data dash-functional tern company inflections edn multiple-cursors paredit peg cider yasnippet toml-mode racer flycheck-rust disaster company-c-headers cmake-mode clang-format cargo rust-mode transpose-frame company-quickhelp parinfer define-word zonokai-theme zenburn-theme zen-and-art-theme xterm-color ws-butler window-numbering which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacemacs-theme spaceline spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme reveal-in-osx-finder restclient restart-emacs rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme quelpa purple-haze-theme pug-mode professional-theme popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el pbcopy pastels-on-dark-theme paradox pangu-spacing ox-twbs ox-reveal ox-gfm osx-trash osx-dictionary orgit organic-green-theme org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-http noctilux-theme niflheim-theme neotree naquadah-theme mustang-theme multi-term mu4e-maildirs-extension mu4e-alert move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow macrostep lush-theme lorem-ipsum livid-mode linum-relative link-hint light-soap-theme less-css-mode launchctl json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme info+ indent-guide ido-vertical-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt heroku-theme hemisu-theme help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme flycheck-pos-tip flx-ido flatui-theme flatland-theme firebelly-theme find-by-pinyin-dired fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump dracula-theme django-theme diff-hl darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web company-tern company-statistics column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme clojure-snippets clj-refactor clean-aindent-mode cider-eval-sexp-fu chinese-pyim cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-pinyin ace-link ace-jump-helm-line ac-ispell))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
