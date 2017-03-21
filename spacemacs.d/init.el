@@ -392,7 +392,7 @@ values."
           ("j" "journal" entry (file+datetree (concat org-directory "/JOURNALs.org"))
            "* %^{Title} %?\n%U\n%a\n" :clock-in t :clock-resume t)))
   (setq org-todo-keywords
-        '((sequence "TODO(t!)" "|" "DONE(d@)3" "CANCELED(c@/!)")))
+        '((sequence "TODO(t!)" "|" "DONE(d)" "CANCELED(c@/!)")))
 
   ;; parinfer
   ;; (setq parinfer-auto-switch-indent-mode t)

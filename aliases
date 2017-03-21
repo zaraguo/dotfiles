@@ -3,6 +3,8 @@ alias ll="ls -lG"
 alias la="ls -aG"
 alias mkdir="mkdir -p"
 alias e="$EDITOR"
+alias subl="open -a 'Sublime Text 2'"
+alias st="open -a 'SourceTree'"
 
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'

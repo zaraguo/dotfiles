@@ -53,9 +53,8 @@ plugins=(git autojump gitignore nvm)
 
 # User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
-export PATH="$HOME/.yarn/bin:/usr/local/sbin:$PATH"
+export PATH=$HOME/.yarn/bin:$HOME/bin:/usr/local/sbin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -90,10 +89,10 @@ fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+[[ -f ~/.aliases ]] && source ~/.aliases
+
 # [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
-# # aliases
-[[ -f ~/.aliases ]] && source ~/.aliases
