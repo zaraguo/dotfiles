@@ -11,6 +11,7 @@
     ~/.vimrc.mappings: vimrc.mappings
     ~/.spacemacs.d: spacemacs.d
     ~/.tmux.conf: tmux.conf
+    ~/.tmuxline.conf: tmuxline.conf
     ~/.zshrc: zshrc
     ~/.zsh: zsh
     ~/.aliases: aliases
