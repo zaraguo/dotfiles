@@ -201,6 +201,7 @@ Plug 'junegunn/seoul256.vim'
 Plug 'tomasr/molokai'
 Plug 'chriskempson/vim-tomorrow-theme'
 
+" install in tmux, then there will be $TMUX
 if exists('$TMUX')
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'benmills/vimux' "{{{
