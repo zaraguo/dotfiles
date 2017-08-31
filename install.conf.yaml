@@ -15,6 +15,8 @@
     ~/.zshrc: zshrc
     ~/.zsh: zsh
     ~/.aliases: aliases
+    ~/.gitmessage.txt: gitmessage.txt
+    ~/.gitignore_global: gitignore_global
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]

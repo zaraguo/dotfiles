@@ -1,0 +1,24 @@
+[alias]
+	co = checkout
+	st = status
+    branchdiff = !"git diff `git merge-base HEAD origin/master`"
+    bdd = !"git diff `git merge-base HEAD origin/develop`"
+	hack = town hack
+	kill = town kill
+	prune-branches = town prune-branches
+	rename-branch = town rename-branch
+	sync = town sync
+	repo = town repo
+	new-pull-request = town new-pull-request
+	prepend = town prepend
+	append = town append
+	ship = town ship
+[user]
+	name = zaraguo
+	email = zaraguo92@gmail.com
+[core]
+	excludesfile = ~/.gitignore_global
+[status]
+    showUntrackedFiles = all
+[commit]
+	template = ~/.gitmessage.txt
