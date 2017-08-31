@@ -55,9 +55,11 @@ plugins=(git autojump gitignore nvm)
 
 export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
 export PATH=$HOME/.yarn/bin:$HOME/bin:/usr/local/sbin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+
+# loadnvm manually
+# source "$(brew --prefix nvm)/nvm.sh"
 
 # load custom executable functions
 for function in ~/.zsh/functions/*; do
@@ -88,8 +90,6 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-export NVM_DIR="$HOME/.nvm"
-. "/usr/local/opt/nvm/nvm.sh"
 
 [[ -f ~/.aliases ]] && source ~/.aliases
 
