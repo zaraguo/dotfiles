@@ -1,0 +1,5 @@
+function ggs() {
+    git add .
+    git commit . -m ':sparkles:'
+    git push
+}

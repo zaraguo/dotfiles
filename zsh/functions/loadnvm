@@ -1,0 +1,3 @@
+function loadnvm (){
+    source $(brew --prefix nvm)/nvm.sh
+}

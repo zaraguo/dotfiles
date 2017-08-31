@@ -3,6 +3,7 @@ alias ll="ls -lG"
 alias la="ls -aG"
 alias mkdir="mkdir -p"
 alias e="$EDITOR"
+alias vim="nvim"
 alias subl="open -a 'Sublime Text 2'"
 alias st="open -a 'SourceTree'"
 

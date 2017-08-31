@@ -83,3 +83,12 @@ imap <Up> <Nop>
 imap <Down> <Nop>
 imap <Left> <Nop>
 imap <Right> <Nop>
+
+" surround a word with some character
+function! s:surround()
+    let word = expand("<cword>")
+    let wrap= input("wrap with: ")
+    let command = "s/".word."/".wrap.word.wrap."/"
+    execute command
+endfunction
+nmap cx :call <SID>surround()<CR>
