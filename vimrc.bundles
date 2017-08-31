@@ -297,11 +297,12 @@ Plug 'Valloric/YouCompleteMe'
   let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
   let g:ycm_filetype_blacklist={'unite': 1}
 
-Plug 'SirVer/ultisnips'
-  let g:UltiSnipsExpandTrigger="<tab>"
-  let g:UltiSnipsJumpForwardTrigger="<tab>"
-  let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-  let g:UltiSnipsSnippetsDir='~/.vim/snippets'
+" occur something wrong
+"Plug 'SirVer/ultisnips'
+"  let g:UltiSnipsExpandTrigger="<tab>"
+"  let g:UltiSnipsJumpForwardTrigger="<tab>"
+"  let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+"  let g:UltiSnipsSnippetsDir='~/.vim/snippets'
 "}}}
 
 
@@ -313,6 +314,28 @@ Plug 'maksimr/vim-jsbeautify', { 'for': 'javascript' }
   nnoremap <leader>fjs :call JsBeautify()<cr>
 " Plug 'kchmck/vim-coffee-script', { 'for': 'coffee' }
 Plug 'elzr/vim-json', { 'for': 'json' }
+" }}}
+
+" ----------------------------------------------------------------------------
+" syntastic {{{
+" ----------------------------------------------------------------------------
+Plug 'scrooloose/syntastic'
+let g:syntastic_error_symbol='>>'
+let g:syntastic_warning_symbol='>'
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_loc_list_height = 5
+let g:syntastic_javascript_checkers = ['jshint', 'eslint']
+highlight SyntasticErrorSign guifg=white guibg=black
+function! ToggleErrors()
+    let old_last_winnr = winnr('$')
+    lclose
+    if old_last_winnr == winnr('$')
+        Errors
+    endif
+endfunction
+nnoremap <Leader>s :call ToggleErrors()<cr>
 " }}}
 
 " ----------------------------------------------------------------------------
