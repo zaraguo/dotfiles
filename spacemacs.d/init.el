@@ -325,12 +325,7 @@ values."
   ;; evil
   (setq-default evil-escape-delay 0.3)
 
-  (setq evil-move-beyond-eol t)
-
-  ;; company
-  ;; (setq company-tooltip-align-annotations t)
-  ;; (global-set-key (kbd "TAB") #'company-indent-or-complete-common)
-  )
+  (setq evil-move-beyond-eol t))
 
 (defun evil-custom-bindings ()
   (define-key evil-normal-state-map (kbd "RET")
@@ -339,8 +334,7 @@ values."
       (call-interactively 'spacemacs/evil-insert-line-below)
       (evil-next-line)))
   ;; (define-key evil-insert-state-map (kbd "C-;") 'forward-char)
-  (global-set-key (kbd "C-;") 'forward-char)
-  )
+  (global-set-key (kbd "C-;") 'forward-char))
 
 (defun clojure-setup ()
   ;; (setq clojure-align-forms-automatically t)
@@ -364,7 +358,6 @@ values."
      `(org-checkbox ((t (:background "#5F5F5F" :foreground "#FFFFEF" :box nil))))
      `(header-line ((t (:foreground "#F0DFAF" :background "#2B2B2B" :box nil)))))))
 
-
 (defun dotspacemacs/user-config ()
   "Configuration function.
   This function is called at the very end of Spacemacs initialization after
@@ -380,29 +373,51 @@ values."
 
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
-  ;; Change org bullets
-  ;; (setq org-bullets-bullet-list '("◉" "○" "◆" "✿"))
   (setq org-bullets-bullet-list '("◉" "•" "○" "✿"))
+
+  (eval-after-load "org"
+    '(require 'ox-gfm nil t))
 
   ;; capture
   (setq org-directory "~/workspace/org/")
   (setq org-capture-templates
-        '(("i" "idea" entry (file (concat org-directory "/IDEAs.org"))
-           "* %^{Title} %?\n%U\n%a\n")
-          ("t" "todo" entry (file (concat org-directory "/TODOs.org"))
-           "* TODO %?\n%U\n%a\n" t)
-          ("n" "note" entry (file (concat org-directory "/NOTEs.org"))
-           "* %? :NOTE:\n%U\n%a\n" :clock-in t :clock-resume t)
-          ("j" "journal" entry (file+datetree (concat org-directory "/JOURNALs.org"))
-           "* %^{Title} %?\n%U\n%a\n" :clock-in t :clock-resume t)))
+        '(("t" "Todo [inbox]" entry (file+headline (concat org-directory "/inbox.org") "Tasks")
+           "* TODO %?\n  %a")
+          ("T" "Tickler" entry (file+headline (concat org-directory "/tickler.org") "Tickler")
+           "* %?\n  Added at: %U")
+          ("j" "Journal" entry (file+datetree (concat org-directory "/journal.org"))
+           "* %?\n  Entered on: %U")))
+  (setq org-refile-targets '(("~/workspace/org/gtd.org" :maxlevel . 2)
+                             ("~/workspace/org/someday.org" :level . 1)
+                             ("~/workspace/org/tickler.org" :maxlevel . 2)))
   (setq org-todo-keywords
-        '((sequence "TODO(t!)" "|" "DONE(d)" "CANCELED(c@/!)")))
+        '((sequence "TODO(t)" "WAITING(w)" "|" "DONE(d)" "CANCELED(c)")))
 
+  ;; agenda
   (setq org-agenda-files '("~/workspace/org/"))
+  (setq org-agenda-custom-commands
+        '(("o" "At the office" tags-todo "@office"
+           ((org-agenda-overriding-header "Office")
+            (org-agenda-skip-function #'my-org-agenda-skip-all-siblings-but-first)))))
+  (defun my-org-agenda-skip-all-siblings-but-first ()
+    "Skip all but the first non-done entry."
+    (let (should-skip-entry)
+      (unless (org-current-is-todo)
+        (setq should-skip-entry t))
+      (save-excursion
+        (while (and (not should-skip-entry) (org-goto-sibling t))
+          (when (org-current-is-todo)
+            (setq should-skip-entry t))))
+      (when should-skip-entry
+        (or (outline-next-heading)
+            (goto-char (point-max))))))
+  (defun org-current-is-todo ()
+    (string= "TODO" (org-get-todo-state)))
 
   ;; org-mobile
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-mobile-inbox-for-pull (concat org-directory "index.org"))
+  (setq org-mobile-force-id-on-agenda-items nil)
 
   ;; parinfer
   ;; (setq parinfer-auto-switch-indent-mode t)

@@ -6,6 +6,8 @@ alias e="$EDITOR"
 alias vim="nvim"
 alias subl="open -a 'Sublime Text 2'"
 alias st="open -a 'SourceTree'"
+alias mkd="open -a 'Marked 2'"
+alias lnvm="loadnvm"
 
 # Pretty print the path
 alias path='echo $PATH | tr -s ":" "\n"'
