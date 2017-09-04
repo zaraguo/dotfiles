@@ -1,5 +1,6 @@
 function ggs() {
-    git add .
+    git stash -u -k
     git commit . -m ':sparkles:'
+    git stash pop
     git push
 }
