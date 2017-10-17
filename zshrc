@@ -55,6 +55,7 @@ plugins=(git autojump gitignore nvm)
 
 # export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
 export PATH="/usr/local/opt/php56/bin:$PATH"
+export PATH=$HOME/workspace/apache-maven/bin:$PATH
 export PATH=$HOME/.yarn/bin:$HOME/bin:/usr/local/sbin:$PATH
 
 source $ZSH/oh-my-zsh.sh

@@ -225,7 +225,7 @@ if exists('$TMUX')
     let g:tmuxline_theme = 'powerline'
 endif
 
-Plug 'ShowTrailingWhitespace'
+Plug 'vim-scripts/ShowTrailingWhitespace'
 
 Plug 'mhinz/vim-startify' "{{{
   let g:startify_session_dir = s:get_cache_dir('sessions')
@@ -282,7 +282,7 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
   let g:undotree_WindowLayout = 2
   nnoremap U :UndotreeToggle<CR>
 
-Plug 'bufkill.vim'
+Plug 'vim-scripts/bufkill.vim'
   nnoremap <leader>d :BD<cr>
 "}}}
 
