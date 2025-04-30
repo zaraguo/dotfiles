@@ -8,7 +8,7 @@
 - link:
     ~/.vimrc:
       force: true 
-      path: zshrc
+      path: vimrc
     ~/.ideavimrc: vimrc
     ~/.vimrc.bundles: vimrc.bundles
     ~/.vimrc.mappings: vimrc.mappings

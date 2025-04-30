@@ -395,6 +395,3 @@ endif
 
 " 打通系统和 vim 剪切板
 set clipboard=unnamed
-
-call plug#begin()
-call plug#end()
