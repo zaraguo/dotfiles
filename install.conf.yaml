@@ -31,7 +31,7 @@
       path: config/ghostty
     ~/.config/nvim/lua: 
       force: true 
-      path: nvim/lua
+      path: config/nvim/lua
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]
