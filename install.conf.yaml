@@ -6,18 +6,27 @@
 - clean: ['~']
 
 - link:
-    ~/.vimrc: vimrc
+    ~/.vimrc:
+      force: true 
+      path: zshrc
+    ~/.ideavimrc: vimrc
     ~/.vimrc.bundles: vimrc.bundles
     ~/.vimrc.mappings: vimrc.mappings
-    ~/.spacemacs.d: spacemacs.d
-    ~/.tmux.conf: tmux.conf
-    ~/.tmuxline.conf: tmuxline.conf
-    ~/.zshrc: zshrc
+    ~/.zshrc:
+      force: true 
+      path: zshrc
     ~/.zsh: zsh
     ~/.aliases: aliases
     ~/.gitmessage.txt: gitmessage.txt
     ~/.gitignore_global: gitignore_global
     ~/.gitconfig: gitconfig
+    ~/.config/zellij: 
+      force: true 
+      path: config/zellij
+    ~/.config/zed: config/zed
+    ~/.config/yabai: config/yabai
+    ~/.config/skhd: config/skhd
+    ~/.config/ghostty/: config/skhd
 
 - shell:
     - [git submodule update --init --recursive, Installing submodules]

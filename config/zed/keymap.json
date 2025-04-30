@@ -1,0 +1,73 @@
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "cmd-e": "file_finder::Toggle",
+      "ctrl-;": "editor::ToggleInlayHints",
+      "ctrl-l": "workspace::ActivateNextPane",
+      "ctrl-h": "workspace::ActivatePreviousPane",
+      "ctrl-k": "editor::MoveLineUp",
+      "ctrl-j": "editor::MoveLineDown",
+      "ctrl-,": "editor::Hover",
+      "cmd-ctrl-p": "tab_switcher::Toggle"
+    }
+  },
+  {
+    "context": "Editor && VimControl && !VimWaiting && !menu",
+    "bindings": {
+      "] ]": "pane::ActivateNextItem",
+      "[ [": "pane::ActivatePrevItem",
+      "] e": "editor::GoToDiagnostic",
+      "[ e": "editor::GoToPrevDiagnostic",
+      "space r": "editor::FindAllReferences",
+      "space g d": "editor::GoToDefinition",
+      "space g g": "editor::OpenExcerpts",
+      "space l a": "editor::ToggleCodeActions",
+      "space l r": "editor::Rename",
+      "space l f": "editor::Format",
+      "space l l": "diagnostics::Deploy",
+      "space f": "file_finder::Toggle",
+      "space e": "workspace::ToggleLeftDock",
+      "space o": "outline::Toggle",
+      "space a": "project_symbols::Toggle",
+      "space v": "editor::GoToDefinitionSplit",
+      "space p": "pane::AlternateFile",
+      "space t": "tab_switcher::Toggle"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      // put key-bindings here if you want them to work only in normal mode
+    }
+  },
+  {
+    "context": "Editor && vim_mode == visual && !VimWaiting && !menu",
+    "bindings": {
+      // visual, visual line & visual block modes
+      "shift-j": "editor::MoveLineDown",
+      "shift-k": "editor::MoveLineUp"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == insert",
+    "bindings": {
+      "f d": "vim::NormalBefore"
+    }
+  },
+  {
+    "context": "Editor && mode == full",
+    "bindings": {
+      "shift-enter": ["editor::ExpandExcerpts", { "lines": 5 }]
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-`": "terminal_panel::ToggleFocus",
+      "ctrl-l": "workspace::ActivateNextPane",
+      "ctrl-h": "workspace::ActivatePreviousPane",
+      "cmd-ctrl-p": "tab_switcher::Toggle"
+    }
+  }
+]

@@ -54,14 +54,18 @@ plugins=(git autojump gitignore nvm)
 # User configuration
 
 # export PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
-export PATH="/usr/local/opt/php56/bin:$PATH"
-export PATH=$HOME/workspace/apache-maven/bin:$PATH
+# export PATH=$HOME/workspace/apache-maven/bin:$PATH
 export PATH=$HOME/.yarn/bin:$HOME/bin:/usr/local/sbin:$PATH
 
-source $ZSH/oh-my-zsh.sh
+export PATH="/opt/homebrew/opt/curl/bin:$PATH"
 
-# loadnvm manually
-# source "$(brew --prefix nvm)/nvm.sh"
+# export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_291.jdk/Contents/Home"
+# export PATH=$JAVA_HOME/bin:$PATH
+
+export MAVEN_HOME="/Users/zaraguo/Applications/IntelliJ IDEA Ultimate 2023.3.8.app/Contents/plugins/maven/lib/maven3"
+export PATH=$PATH:$MAVEN_HOME/bin
+
+source $ZSH/oh-my-zsh.sh
 
 # load custom executable functions
 for function in ~/.zsh/functions/*; do
@@ -95,8 +99,64 @@ fi
 
 [[ -f ~/.aliases ]] && source ~/.aliases
 
-# [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
+export PATH="/Users/zaraguo/.tbtools/bin:$PATH"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/zaraguo/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/zaraguo/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/zaraguo/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/zaraguo/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+# loadnvm manually
+# source "$(brew --prefix nvm)/nvm.sh"
+
+export NVM_DIR="$HOME/.nvm"
+# [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+
+# pnpm
+export PNPM_HOME="/Users/zaraguo/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# export whale_api_key=你个人的whale api key
+# export whale_servicelocator_local_enabled=1
+# idealab
+export idealab_api_key=f575273e1897e749c3a262412b4a5ed5 
+
+# rust
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+export PATH=~/Applications/calibre.app/Contents/MacOS/:$PATH
+
+# bun completions
+[ -s "/Users/zaraguo/.bun/_bun" ] && source "/Users/zaraguo/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+. "/Users/zaraguo/.deno/env"
+
+# zellij 跟随终端启动
+# eval "$(zellij setup --generate-auto-start zsh)"
