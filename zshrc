@@ -108,17 +108,17 @@ export PATH="/Users/zaraguo/.tbtools/bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/zaraguo/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/zaraguo/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/zaraguo/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/zaraguo/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+# __conda_setup="$('/Users/zaraguo/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/Users/zaraguo/miniconda3/etc/profile.d/conda.sh" ]; then
+#         . "/Users/zaraguo/miniconda3/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/Users/zaraguo/miniconda3/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
 # <<< conda initialize <<<
 
 # loadnvm manually
@@ -141,10 +141,10 @@ esac
 export idealab_api_key=f575273e1897e749c3a262412b4a5ed5 
 
 # rust
-export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+# export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
+# export PATH="$HOME/.cargo/bin:$PATH"
 
-export PATH=~/Applications/calibre.app/Contents/MacOS/:$PATH
+# export PATH=~/Applications/calibre.app/Contents/MacOS/:$PATH
 
 # bun completions
 [ -s "/Users/zaraguo/.bun/_bun" ] && source "/Users/zaraguo/.bun/_bun"
@@ -156,7 +156,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-. "/Users/zaraguo/.deno/env"
 
-# zellij 跟随终端启动
-# eval "$(zellij setup --generate-auto-start zsh)"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+
+# . "/Users/zaraguo/.deno/env"
