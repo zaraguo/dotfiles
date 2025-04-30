@@ -89,4 +89,4 @@ ctrl + alt - r : yabai --restart-service
 ctrl + shift - a : open -a 'Arc'
 ctrl + shift - d : open -a 'Dia'
 ctrl + shift - i : open -a 'Ghostty'
-ctrl + shift - j : open -a 'IntelliJ IDEA Ultimate 2023.3.8.app'
+ctrl + shift - j : open -a 'IntelliJ IDEA Ultimate.app'

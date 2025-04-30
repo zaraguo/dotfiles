@@ -96,8 +96,6 @@ fi
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
-export PATH="/Users/zaraguo/.tbtools/bin:$PATH"
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 # __conda_setup="$('/Users/zaraguo/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -124,9 +122,6 @@ export NVM_DIR="$HOME/.nvm"
 #   *) export PATH="$PNPM_HOME:$PATH" ;;
 # esac
 # pnpm end
-
-# idealab
-export idealab_api_key=f575273e1897e749c3a262412b4a5ed5 
 
 # rust
 # export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
