@@ -33,7 +33,6 @@ map <F6> :set invpaste<CR>:set paste?<CR>
 " smash escape
 inoremap fd <esc>
 inoremap jj <esc>
-inoremap <esc> <Nop>
 
 inoremap <C-]> <C-o>l
 
